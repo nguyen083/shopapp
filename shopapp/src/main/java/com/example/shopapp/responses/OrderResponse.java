@@ -1,39 +1,27 @@
-package com.example.shopapp.dtos;
+package com.example.shopapp.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.*;
 
-import java.util.Date;
-
-@Data
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
-public class OrderDTO {
-    @Min(value = 1, message = "User's ID must be greater than 0")
+public class OrderResponse extends BaseResponse{
+    private Long id;
     @JsonProperty("user_id")
     private Long userId;
 
     @JsonProperty("fullname")
     private String fullName;
 
-    private String email;
 
-    @NotBlank(message = "Phone number is required")
     @JsonProperty("phone_number")
-    @Size(min = 5, message = "Phone number must be greater than 5 characters")
     private String phoneNumber;
 
     private String address;
 
     private String note;
-
-    @Min(value = 0, message = "Total money must be greater than or equal 0")
+    @JsonProperty("order_date")
+    private String orderDate;
+    private String status;
     @JsonProperty("total_money")
     private Float totalMoney;
 
@@ -44,8 +32,13 @@ public class OrderDTO {
     private String shippingAddress;
 
     @JsonProperty("shipping_date")
-    private Date shippingDate;
+    private String shippingDate;
+
+    @JsonProperty("tracking_number")
+    private String trackingNumber;
 
     @JsonProperty("payment_method")
     private String paymentMethod;
+    @JsonProperty("active")
+    private boolean active; // belong to admin
 }

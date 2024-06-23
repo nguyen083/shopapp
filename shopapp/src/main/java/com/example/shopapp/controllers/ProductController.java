@@ -88,12 +88,12 @@ public class ProductController {
     }
 
 
-    @GetMapping("/{id}")
-    public ResponseEntity<String> getProduct(
-            @PathVariable("id") int id
-    ) {
-        return ResponseEntity.ok("Product with id " + id);
-    }
+//    @GetMapping("/{id}")
+//    public ResponseEntity<String> getProduct(
+//            @PathVariable("id") int id
+//    ) {
+//        return ResponseEntity.ok("Product with id " + id);
+//    }
 
     @PostMapping(value = "", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createProduct(
@@ -160,16 +160,33 @@ public class ProductController {
         }
     }
 
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getProductById(
+            @PathVariable("id") Long productId
+    ) {
+        try {
+            Product existingProduct = productService.getProductById(productId);
+            return ResponseEntity.ok(ProductResponse.fromProduct(existingProduct));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
     private boolean isImageFile(MultipartFile file) {
         String contentType = file.getContentType();
         return contentType != null && contentType.startsWith("image/");
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteProduct(
-            @PathVariable int id
-    ) {
-        return ResponseEntity.status(HttpStatus.OK).body("Product  deleted successfully");
+    public ResponseEntity<String> deleteProduct(@PathVariable long id) {
+        try {
+            productService.deleteProduct(id);
+            return ResponseEntity.ok(String.format("Product with id = %d deleted successfully", id));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
 
